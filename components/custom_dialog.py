@@ -16,6 +16,6 @@ class CustomDialog(ctk.CTkToplevel):
         self.ok_button.pack(pady=10)
 
     @staticmethod
-    def show_error(parent, title, message):
+    def show_info(parent, title, message):
         dialog = CustomDialog(parent, title, message)
         parent.wait_window(dialog)

@@ -58,7 +58,7 @@ class RegisterFrame(ctk.CTkFrame):
              
         if password != password_confirmation:
             self.clean_entries()
-            return CustomDialog.show_error(self, "Register", "Passwords not match!!")
+            return CustomDialog.show_info(self, "Register", "Passwords not match!!")
         
         try: 
             validate_data(username, password)
@@ -69,7 +69,7 @@ class RegisterFrame(ctk.CTkFrame):
                 self.controller.show_frame(home.HomeFrame)
             else:
                 self.clean_entries()
-                CustomDialog.show_error(self, "Register", "Register Failed!!")
+                CustomDialog.show_info(self, "Register", "Register Failed!!")
         except ValueError as e:
             self.clean_entries()
-            CustomDialog.show_error(self, "Register", f"{str(e)}!!")
+            CustomDialog.show_info(self, "Register", f"{str(e)}!!")

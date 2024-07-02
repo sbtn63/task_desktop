@@ -26,6 +26,8 @@ class Session:
     def delete_file_session(self):
         try:
             os.remove(self.filename)
+            self.username = None
+            self.token = None
             print(f"Archivo {self.filename} eliminado correctamente.")
         except FileNotFoundError:
             print(f"El archivo {self.filename} no existe.")

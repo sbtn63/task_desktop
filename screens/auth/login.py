@@ -61,8 +61,8 @@ class LoginFrame(ctk.CTkFrame):
                 self.controller.show_frame(home.HomeFrame)
             else:
                 self.clean_entries()
-                CustomDialog.show_error(self, "Login", "Error Login!!")
+                CustomDialog.show_info(self, "Login", "Error Login!!")
         except ValueError as e:
             self.clean_entries()
-            CustomDialog.show_error(self, "Login", f"{str(e)}!!")
+            CustomDialog.show_info(self, "Login", f"{str(e)}!!")
         

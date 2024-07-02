@@ -31,7 +31,9 @@ def initialize_db():
                     content TEXT,
                     completed INTEGER,
                     created_at DATETIME,
-                    updated_at DATETIME
+                    updated_at DATETIME,
+                    user_id INTEGER,
+                    FOREIGN KEY (user_id) REFERENCES users(id)
                 )
             ''')
         conn.commit()

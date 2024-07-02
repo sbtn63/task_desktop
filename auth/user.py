@@ -12,10 +12,10 @@ def get_user(token):
         cursor = conn.cursor()
         username = verify_token(token)
         
-        user = cursor.execute('SELECT * FROM users WHERE username = ?', (username, )).fetchall()
-        
-        if user is None:
-            raise ValueError('User not exists')
+        user = cursor.execute(
+            'SELECT * FROM users WHERE username = ?', 
+            (username, )
+        ).fetchone()
         
     return user
 
@@ -32,7 +32,10 @@ def validate_data(username, password):
 def authenticate_user(username, password):
     with get_conn() as conn:
         cursor = conn.cursor()
-        cursor.execute('SELECT id, username, password FROM users WHERE username = ?', (username,))
+        cursor.execute(
+            'SELECT id, username, password FROM users WHERE username = ?', 
+            (username,)
+        )
         user = cursor.fetchone()
         
         if user is None:
@@ -44,7 +47,10 @@ def authenticate_user(username, password):
     
         token = create_access_token(user[1])
         
-        cursor.execute("UPDATE users SET jwt_token = ?, created_at = ? WHERE id = ?", (token, now, user[0]))
+        cursor.execute(
+            "UPDATE users SET jwt_token = ?, created_at = ? WHERE id = ?", 
+            (token, now, user[0])
+        )
         conn.commit()
         
         session.token = token
@@ -55,7 +61,10 @@ def authenticate_user(username, password):
 def register_user(username, password):
     with get_conn() as conn:
         cursor = conn.cursor()
-        cursor.execute('SELECT id, username, password FROM users WHERE username = ?', (username,))
+        cursor.execute(
+            'SELECT id, username, password FROM users WHERE username = ?', 
+            (username,)
+        )
         user = cursor.fetchone()
         
         if user:
@@ -64,7 +73,10 @@ def register_user(username, password):
         password_hash = generate_password_hash(password, "pbkdf2:sha256:30", 30)
         
         token = create_access_token(username)
-        result = cursor.execute('INSERT INTO users (username, password, jwt_token, created_at) VALUES(?,?,?,?)', (username, password_hash, token, now))
+        cursor.execute(
+            'INSERT INTO users (username, password, jwt_token, created_at) VALUES(?,?,?,?)',
+            (username, password_hash, token, now)
+        )
         conn.commit()        
         
         session.token = token
@@ -75,7 +87,10 @@ def register_user(username, password):
 def logout_user(token):
     with get_conn() as conn:
         cursor = conn.cursor()
-        cursor.execute("UPDATE users SET jwt_token = NULL WHERE jwt_token = ?", (token,))
+        cursor.execute(
+            "UPDATE users SET jwt_token = NULL WHERE jwt_token = ?", 
+            (token,)
+        )
         conn.commit()
         
         session.delete_file_session()
